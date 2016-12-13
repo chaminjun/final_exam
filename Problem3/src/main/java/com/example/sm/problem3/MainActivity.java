@@ -3,17 +3,23 @@ package com.example.sm.problem3;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
 
+   static TextView text_name, text_money;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        text_name = (TextView)findViewById(R.id.text_name);
+        text_money = (TextView)findViewById(R.id.text_money);
 
         ArrayList<CustomerThread> list = new ArrayList<CustomerThread>();
         Manager manager = new Manager();
@@ -30,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         for(CustomerThread ct : list){
 
             try {
-                // need something here
+                Thread.sleep(100);
             } catch (InterruptedException e) { }
         }
 
@@ -51,7 +57,10 @@ class CustomerThread extends Thread{
     CustomerThread(Customer customer){
         this.customer = customer;
     }
-    // need something here
+
+    public void run(){
+        customer.work();
+    }
 }
 
 abstract class Person{
@@ -59,7 +68,6 @@ abstract class Person{
     static int money = 100000;
     int spent_money = 0;
     abstract void work();
-
 }
 
 
@@ -70,7 +78,18 @@ class Customer extends Person{
         this.name = name;
     }
 
-    // need something here
+    @Override
+    void work() {
+        if(Person.money >= 0) {
+            Random mRand = new Random();
+            int ran_num = mRand.nextInt(1000);
+            spent_money += ran_num;
+            money -= ran_num;
+        }else{
+            return;
+        }
+
+    }
 }
 
 
@@ -81,10 +100,17 @@ class Manager extends Person{
         list.add(customer);
     }
 
-    void sort(){ // 직접 소팅 알고리즘을 이용하여 코딩해야함. 자바 기본 정렬 메소드 이용시 감
-
-        // need something here
-
+    void sort(){
+        for(int i = 0; i < list.size(); i++){
+            for(int j = i+1; j < list.size()-1; j++){
+                if(list.get(j).spent_money <= list.get(i).spent_money)
+                {
+                    int tempmoney = list.get(j).spent_money;
+                    list.get(j).spent_money = list.get(i).spent_money;
+                    list.get(i).spent_money = tempmoney;
+                }
+            }
+        }
     }
 
     @Override
@@ -94,4 +120,14 @@ class Manager extends Person{
 }
 
 // need something here
+
+
+
+
+
+
+
+
+
+
 

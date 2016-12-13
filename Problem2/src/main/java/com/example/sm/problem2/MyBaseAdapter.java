@@ -17,6 +17,8 @@ public class MyBaseAdapter extends BaseAdapter implements AdapterView.OnItemClic
     LayoutInflater mLayoutInflater = null;
     public int selected_position;
 
+
+
     MyBaseAdapter(  Context context, ArrayList<Employee> data){
         mContext = context;
         mData = data;
@@ -66,6 +68,22 @@ public class MyBaseAdapter extends BaseAdapter implements AdapterView.OnItemClic
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // need something here
+        final Context context = parent.getContext();
+
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_view_item_layout, parent, false);
+        }else {
+
+            String myname = mData.get(position).getName();
+            String myage = String.valueOf(mData.get(position).getAge());
+            String mysalary = String.valueOf(mData.get(position).getSalary());
+            MainActivity.text_employeeName.setText(myname);
+            MainActivity.text_employeeAge.setText(myage);
+            MainActivity.text_employeeSalary.setText(mysalary);
+        }
+//        Employee listViewItem = mData.get(position);
+
+        return convertView;
     }
 }

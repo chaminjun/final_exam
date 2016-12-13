@@ -43,9 +43,15 @@ public class MyBaseAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // need something here
+        final Context context = parent.getContext();
 
-        return itemLayout;
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_view_item_layout, parent, false);
+        }
+
+
+        return convertView;
 
     }
 }
